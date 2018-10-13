@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const NUM_BOXES = 32;
 class App extends Component {
   
-  static randomColor() {
-    let randIndex = Math.floor( Math.random() * App.defaultProps.allColors.length );
-    return App.defaultProps.allColors[ randIndex ];
+  randomColor() {
+    let randIndex = Math.floor( Math.random() * this.props.allColors.length );
+    return this.props.allColors[ randIndex ];
   } 
   constructor(props) {
     super(props);
     //set initial random colors
-    this.state = {
-      colors: (new Array( App.NUM_BOXES )).fill().map( ( _ ) => App.randomColor() ),
-    };
+    const colors = Array( NUM_BOXES ).fill().map( this.randomColor, this );
+    this.state = {colors};
 
     setInterval( (e) => {
-      let new_colors = Array.from( this.state.colors );
-      let randIndex = Math.floor( Math.random() * new_colors.length );
-      new_colors[ randIndex ] = App.randomColor();
-      this.setState( { colors: new_colors });
+      let colors = Array.from( this.state.colors );
+      let randIndex = Math.floor( Math.random() * colors.length );
+      colors[ randIndex ] = this.randomColor();
+      this.setState( { colors });
     }, 300 );
 
   }
@@ -39,7 +39,6 @@ class App extends Component {
     );
   }
 };
-App.NUM_BOXES = 32;
 
 const Box = ( prop ) => (
   <div style={{
